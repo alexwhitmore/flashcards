@@ -1,30 +1,30 @@
-import React, { useEffect } from 'react'
-import { useParams, Link, useHistory } from 'react-router-dom'
-import { readDeck, updateDeck } from '../utils/api'
+import React, { useEffect } from 'react';
+import { useParams, Link, useHistory } from 'react-router-dom';
+import { readDeck, updateDeck } from '../utils/api';
 
 export default function EditDeck({ selectedDeck, setSelectedDeck }) {
-  const { deckId } = useParams()
-  const history = useHistory()
+  const { deckId } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
-    const abortController = new AbortController()
-    readDeck(deckId, abortController.signal).then(setSelectedDeck)
+    const abortController = new AbortController();
+    readDeck(deckId, abortController.signal).then(setSelectedDeck);
 
-    return () => abortController.abort()
-  }, [deckId])
+    return () => abortController.abort();
+  }, [deckId, setSelectedDeck]);
 
   const handleChange = ({ target }) => {
     setSelectedDeck({
       ...selectedDeck,
       [target.name]: target.value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = (event) => {
-    event.preventDefault()
-    updateDeck(selectedDeck)
-    history.push(`/decks/${deckId}`)
-  }
+    event.preventDefault();
+    updateDeck(selectedDeck);
+    history.push(`/decks/${deckId}`);
+  };
 
   return (
     <div className='container'>
@@ -71,8 +71,7 @@ export default function EditDeck({ selectedDeck, setSelectedDeck }) {
           <Link
             to={`/decks/${selectedDeck.id}`}
             type='button'
-            className='btn btn-secondary mr-2'
-          >
+            className='btn btn-secondary mr-2'>
             Cancel
           </Link>
           <button type='submit' className='btn btn-primary'>
@@ -81,5 +80,5 @@ export default function EditDeck({ selectedDeck, setSelectedDeck }) {
         </div>
       </form>
     </div>
-  )
+  );
 }

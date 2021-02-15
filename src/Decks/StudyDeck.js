@@ -1,24 +1,24 @@
-import React, { useEffect, useState, Fragment } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import React, { useEffect, useState, Fragment } from 'react';
+import { useParams, Link } from 'react-router-dom';
 
-import { readDeck } from '../utils/api'
-import StudyCardLogic from './StudyCardLogic'
+import { readDeck } from '../utils/api';
+import StudyCardLogic from './StudyCardLogic';
 
 export default function StudyDeck({ selectedDeck, setSelectedDeck }) {
-  const [cardList, setCardList] = useState([])
-  const { deckId } = useParams()
+  const [cardList, setCardList] = useState([]);
+  const { deckId } = useParams();
 
   useEffect(() => {
-    const abortController = new AbortController()
+    const abortController = new AbortController();
     readDeck(deckId, abortController.signal).then((deck) => {
-      setSelectedDeck(deck)
-      setCardList(deck.cards)
-    })
+      setSelectedDeck(deck);
+      setCardList(deck.cards);
+    });
 
-    return () => abortController.abort()
-  }, [deckId])
+    return () => abortController.abort();
+  }, [deckId, setSelectedDeck]);
 
-  const validCards = cardList && cardList.filter((card) => !card.cards)
+  const validCards = cardList && cardList.filter((card) => !card.cards);
 
   return (
     <Fragment>
@@ -56,5 +56,5 @@ export default function StudyDeck({ selectedDeck, setSelectedDeck }) {
         </Fragment>
       )}
     </Fragment>
-  )
+  );
 }
